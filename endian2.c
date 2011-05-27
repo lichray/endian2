@@ -38,7 +38,7 @@ static __inline int
 is_big_endian(void)
 {
 	union {
-		uint32_t i;
+		__uint32_t i;
 		char c[4];
 	} bint = {0x01020304};
 	return bint.c[0] == 1;
@@ -49,9 +49,6 @@ is_big_endian(void)
  * returns -1 when the format is wrong,
  *          0 when no conversion is needed,
  *          positive value == len(fmt) - 1 (w/o the leading '>'/'<').
- *
- * h2endian() is identical to this, except that
- * it's interpreted as "converts host endianness to any"
  */
 int
 endian2h(const char *__restrict fmt, void *p)
@@ -65,6 +62,14 @@ endian2h(const char *__restrict fmt, void *p)
 	}
 	return __endian2(fmt + 1, p);
 }
+
+/*
+ * converts host endianness to any
+ * yes, it's identical to endian2h
+ */
+int
+h2endian(const char *__restrict, void *)
+	__attribute__((alias("endian2h")));
 
 /*
  * reverses any endianness

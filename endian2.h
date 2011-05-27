@@ -7,8 +7,7 @@ int
 endian2h(const char *__restrict __fmt, void *__src);
 
 int
-h2endian(const char *__restrict, void *)
-	__attribute__((alias("endian2h")));
+h2endian(const char *__restrict __fmt, void *__src);
 
 int
 r_endian(const char *__restrict __fmt, void *__src);
