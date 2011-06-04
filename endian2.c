@@ -34,6 +34,8 @@ __endian2(const char *__restrict fmt, void *p)
  * Reference:
  * http://stackoverflow.com/questions/1001307/detecting-endianness-programmatically-in-a-c-program
  */
+#ifndef is_big_endian
+
 static __inline int
 is_big_endian(void)
 {
@@ -43,6 +45,8 @@ is_big_endian(void)
 	} bint = {0x01020304};
 	return bint.c[0] == 1;
 }
+
+#endif
 
 /*
  * converts any endianness to host
