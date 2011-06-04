@@ -5,27 +5,32 @@ __endian2(const char *__restrict fmt, void *p)
 {
 	const char *i;
 	for (i = fmt; *i != '\0'; i++) {
-#define fmtInt(x, T) \
-	case x: { \
+#define _swpint(T) { \
 		__uint##T##_t *n = p; \
 		*n = bswap##T(*n); \
 		p += sizeof(__uint##T##_t); \
 		break; \
 	}
-#define fmtSkip(x, n) \
-	case x: { \
+#define _noswp(n) { \
 		p += n; \
 		break; \
 	}
 		switch (*i) {
-			fmtInt('h', 16);
-			fmtInt('l', 32);
-			fmtInt('q', 64);
-			fmtSkip('.', 1);
+		case 'h':
+			_swpint(16);
+		case 'l':
+		case 'f':
+			_swpint(32);
+		case 'q':
+		case 'd':
+			_swpint(64);
+		case '.':
+		case 'c':
+			_noswp(1);
 		default : return -1;
 		}
-#undef fmtInt
-#undef fmtSkip
+#undef _swpint
+#undef _noswp
 	}
 	return i - fmt;
 }
